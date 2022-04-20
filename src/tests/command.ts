@@ -62,8 +62,15 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
         })
     )
     .add(new ContextMenuCommand()
+        .setType(`message`)
+        .setName(`Message Command`)
+        .setExecute(async (ctx) => {
+            await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
+        })
+    )
+    .add(new ContextMenuCommand()
         .setType(`user`)
-        .setName(`bar`)
+        .setName(`User Command`)
         .setExecute(async (ctx) => {
             await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
         })
