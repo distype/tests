@@ -49,7 +49,7 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             const firstButton = new Button()
                 .setId(`foobutton0`)
                 .setStyle(ButtonStyle.PRIMARY)
-                .setLabel(`Click me!`)
+                .setLabel(`Click me! (I only work once!)`)
                 .setExecute(async (ctx) => {
                     await ctx.send(`Hello!`);
                     ctx.unbind();
@@ -68,10 +68,22 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
                     await ctx.send(`Here are some more buttons!`, new Array(5).fill(new Array(5).fill(anotherButton)));
                 });
 
-            await ctx.send(`Cool buttons below!`, [firstButton, secondButton]);
+            const thirdButton = new Button()
+                .setId(`foobutton2`)
+                .setStyle(ButtonStyle.SUCCESS)
+                .setLabel(`Edit this message after 10 seconds`)
+                .setExecute(async (ctx) => {
+                    await ctx.editParentDefer();
+                    await wait(10000);
+                    await ctx.editParent(`Edited!`);
+                    ctx.unbind();
+                });
+
+            await ctx.send(`Cool buttons below!`, [firstButton, secondButton, thirdButton]);
 
             ctx.commandHandler.bindButton(firstButton);
             ctx.commandHandler.bindButton(secondButton);
+            ctx.commandHandler.bindButton(thirdButton);
         })
     )
     .bindCommand(new ChatCommand()
@@ -113,5 +125,3 @@ client.gateway.on(`SHARDS_READY`, () => {
 });
 
 client.gateway.connect();
-
-
