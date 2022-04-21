@@ -1,7 +1,7 @@
 import { configDotenv } from '../dotenv';
 
 import { Logger, wait } from '@br88c/node-utils';
-import { ChatCommand, CommandHandler, ContextMenuCommand, Modal } from '@distype/cmd';
+import { Button, ButtonStyle, ChatCommand, CommandHandler, ContextMenuCommand, Modal } from '@distype/cmd';
 import { Client } from 'distype';
 import { inspect } from 'util';
 
@@ -17,7 +17,7 @@ const logger = new Logger({
 const client = new Client(process.env.BOT_TOKEN!, { gateway: { intents: `nonPrivileged` } }, logger.log, logger);
 
 const commandHandler = new CommandHandler(client, logger.log, logger)
-    .add(new ChatCommand()
+    .bindCommand(new ChatCommand()
         .setName(`foo`)
         .setDescription(`Foo command`)
         .addStringParameter(true, `bar`, `Describe bar`)
@@ -26,14 +26,14 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             await ctx.send(`\`\`\`js\n${inspect(ctx.parameters)}\n\`\`\``);
         })
     )
-    .add(new ChatCommand()
+    .bindCommand(new ChatCommand()
         .setName(`error`)
         .setDescription(`This command throws an error!`)
         .setExecute(() => {
             throw new Error(`Oops! I threw an error`);
         })
     )
-    .add(new ChatCommand()
+    .bindCommand(new ChatCommand()
         .setName(`defer`)
         .setDescription(`This command waits 10 seconds to send a response!`)
         .setExecute(async (ctx) => {
@@ -42,12 +42,44 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             await ctx.send(`It worked!`);
         })
     )
-    .add(new ChatCommand()
+    .bindCommand(new ChatCommand()
+        .setName(`buttons`)
+        .setDescription(`This command sends buttons!`)
+        .setExecute(async (ctx) => {
+            const firstButton = new Button()
+                .setId(`foobutton0`)
+                .setStyle(ButtonStyle.PRIMARY)
+                .setLabel(`Click me!`)
+                .setExecute(async (ctx) => {
+                    await ctx.send(`Hello!`);
+                    ctx.unbind();
+                });
+
+            const secondButton = new Button()
+                .setId(`foobutton1`)
+                .setStyle(ButtonStyle.SECONDARY)
+                .setLabel(`Click for more buttons!`)
+                .setExecute(async (ctx) => {
+                    const anotherButton = new Button()
+                        .setURL(`https://github.com/distype/cmd`)
+                        .setStyle(ButtonStyle.LINK)
+                        .setLabel(`Check out this link!`);
+
+                    await ctx.send(`Here are some more buttons!`, new Array(5).fill(new Array(5).fill(anotherButton)));
+                });
+
+            await ctx.send(`Cool buttons below!`, [firstButton, secondButton]);
+
+            ctx.commandHandler.bindButton(firstButton);
+            ctx.commandHandler.bindButton(secondButton);
+        })
+    )
+    .bindCommand(new ChatCommand()
         .setName(`modal`)
         .setDescription(`This command opens up a modal!`)
         .setExecute(async (ctx) => {
             await ctx.showModal(new Modal()
-                .setId(`foobar`)
+                .setId(`foomodal`)
                 .setTitle(`A cool modal!`)
                 .addField(true, `field0`, `How are you?`, `paragraph`, { placeholder: `Doing great!` })
                 .addField(false, `field1`, `A non-required field`, `short`)
@@ -61,18 +93,18 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             });
         })
     )
-    .add(new ContextMenuCommand()
+    .bindCommand(new ContextMenuCommand()
         .setType(`message`)
         .setName(`Message Command`)
         .setExecute(async (ctx) => {
             await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
         })
     )
-    .add(new ContextMenuCommand()
+    .bindCommand(new ContextMenuCommand()
         .setType(`user`)
         .setName(`User Command`)
         .setExecute(async (ctx) => {
-            await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
+            await ctx.send(`\`\`\`js\n${inspect(ctx.target.user)}\n\`\`\``);
         })
     );
 
