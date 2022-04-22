@@ -17,6 +17,23 @@ const logger = new Logger({
 const client = new Client(process.env.BOT_TOKEN!, { gateway: { intents: `nonPrivileged` } }, logger.log, logger);
 
 const commandHandler = new CommandHandler(client, logger.log, logger)
+    .setButtonMiddleware((ctx) => {
+        logger.log(`Got an interaction for button ${ctx.component.customId}`);
+        return true;
+    })
+    .setChatCommandMiddleware((ctx) => {
+        logger.log(`Got an interaction for chat command ${ctx.command.name}`);
+        if (ctx.command.name === `middlewarefail`) return false;
+        else return true;
+    })
+    .setContextMenuCommandMiddleware((ctx) => {
+        logger.log(`Got an interaction for context menu command ${ctx.command.name}`);
+        return true;
+    })
+    .setModalMiddleware((ctx) => {
+        logger.log(`Got an interaction for modal ${ctx.modal.customId}`);
+        return true;
+    })
     .bindCommand(new ChatCommand()
         .setName(`foo`)
         .setDescription(`Foo command`)
@@ -103,6 +120,13 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
                 content: `This is a message after the modal was opened`,
                 flags: 64
             });
+        })
+    )
+    .bindCommand(new ChatCommand()
+        .setName(`middlewarefail`)
+        .setDescription(`I fail in middleware!`)
+        .setExecute(async (ctx) => {
+            await ctx.send(`Uh oh, I didn't fail in middleware...`);
         })
     )
     .bindCommand(new ContextMenuCommand()
