@@ -4,7 +4,7 @@
     <br><br>
     <p>
         <a href="https://github.com/distype/tests/actions/workflows/tests.yml"><img src="https://img.shields.io/github/workflow/status/distype/tests/Tests?label=tests&style=for-the-badge&logo=github"><a>
-        <a href="https://discord.gg/hRXKcUKGHB"><img src="https://img.shields.io/discord/564877383308541964?color=5162F1&style=for-the-badge&logo=discord&logoColor=white"></a>
+        <a href="https://discord.gg/E2JsYPPJYN"><img src="https://img.shields.io/discord/773939670505619486?color=5162F1&style=for-the-badge&logo=discord&logoColor=white"></a>
     </p>
 </div>
 
