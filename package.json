@@ -1,6 +1,6 @@
 {
   "name": "@distype/tests",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "description": "A testing suite for Distype.",
   "main": "./dist/index.js",
   "scripts": {
@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@br88c/eslint-config": "^1.4.0",
-    "@types/node": "^16.11.27",
-    "eslint": "^8.13.0",
+    "@types/node": "^16.11.30",
+    "eslint": "^8.14.0",
     "typescript": "^4.6.3"
   },
   "engines": {
