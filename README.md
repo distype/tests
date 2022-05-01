@@ -24,6 +24,8 @@ You can then run the following command in this directory:
 npm link distype
 ```
 
+The same applies for `@distype/cmd`.
+
 ### Prerequisites
 
 - **[Node.js >=16.13.0](https://nodejs.org/)**
