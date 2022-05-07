@@ -96,11 +96,23 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
                     ctx.unbind();
                 });
 
-            await ctx.send(`Cool buttons below!`, [firstButton, secondButton, thirdButton]);
+            const fourthButton = new Button()
+                .setId(`foobutton3`)
+                .setStyle(ButtonStyle.DANGER)
+                .setLabel(`I expire after 5 seconds!`)
+                .setExpire(5000, async () => {
+                    await ctx.edit(`@original`, `Cool buttons below!`, [firstButton, secondButton, thirdButton]);
+                })
+                .setExecute(async (ctx) => {
+                    await ctx.sendEphemeral(`I'm still valid!`);
+                });
+
+            await ctx.send(`Cool buttons below!`, [firstButton, secondButton, thirdButton, fourthButton]);
 
             ctx.commandHandler.bindButton(firstButton);
             ctx.commandHandler.bindButton(secondButton);
             ctx.commandHandler.bindButton(thirdButton);
+            ctx.commandHandler.bindButton(fourthButton);
         })
     )
     .bindCommand(new ChatCommand()
