@@ -102,6 +102,7 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
                 .setLabel(`I expire after 5 seconds!`)
                 .setExpire(5000, async () => {
                     await ctx.edit(`@original`, `Cool buttons below!`, [firstButton, secondButton, thirdButton]);
+                    return true;
                 })
                 .setExecute(async (ctx) => {
                     await ctx.sendEphemeral(`I'm still valid!`);
