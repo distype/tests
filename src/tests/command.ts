@@ -88,10 +88,10 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             const thirdButton = new Button()
                 .setId(`foobutton2`)
                 .setStyle(ButtonStyle.SUCCESS)
-                .setLabel(`Edit this message after 10 seconds`)
+                .setLabel(`Edit this message after 5 seconds`)
                 .setExecute(async (ctx) => {
                     await ctx.editParentDefer();
-                    await wait(10000);
+                    await wait(5000);
                     await ctx.editParent(`Edited!`);
                     ctx.unbind();
                 });
@@ -99,8 +99,8 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
             const fourthButton = new Button()
                 .setId(`foobutton3`)
                 .setStyle(ButtonStyle.DANGER)
-                .setLabel(`I expire after 5 seconds!`)
-                .setExpire(5000, async () => {
+                .setLabel(`I expire after 10 seconds!`)
+                .setExpire(10000, async () => {
                     await ctx.edit(`@original`, `Cool buttons below!`, [firstButton, secondButton, thirdButton]);
                     return true;
                 })
@@ -109,11 +109,6 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
                 });
 
             await ctx.send(`Cool buttons below!`, [firstButton, secondButton, thirdButton, fourthButton]);
-
-            ctx.commandHandler.bindButton(firstButton);
-            ctx.commandHandler.bindButton(secondButton);
-            ctx.commandHandler.bindButton(thirdButton);
-            ctx.commandHandler.bindButton(fourthButton);
         })
     )
     .bindCommand(new ChatCommand()
