@@ -5,12 +5,8 @@
   "main": "./dist/index.js",
   "scripts": {
     "build": "rm -rf ./dist && tsc",
-    "build:install": "npm i --also=dev && npm run build",
     "lint": "eslint ./src",
-    "lint:fix": "eslint ./src --fix",
-    "lint:install": "npm i --also=dev && npm run lint",
-    "test:build": "npm run build:install",
-    "test:lint": "npm run lint:install"
+    "lint:fix": "eslint ./src --fix"
   },
   "keywords": [
     "distype",
