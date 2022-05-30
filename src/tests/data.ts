@@ -1,7 +1,8 @@
 import { configDotenv } from '../dotenv';
 
-import { Logger, wait } from '@br88c/node-utils';
+import { Logger } from '@br88c/node-utils';
 import { Client } from 'distype';
+import { setTimeout as wait } from 'node:timers/promises';
 
 configDotenv();
 
@@ -17,7 +18,7 @@ const client = new Client(process.env.BOT_TOKEN!, {
     gateway: { intents: `nonPrivileged` }
 }, logger.log, logger);
 
-client.gateway.on(`SHARDS_READY`, async () => {
+client.gateway.on(`SHARDS_RUNNING`, async () => {
     await wait(5000);
     console.log(await client.getChannelData(process.env.TESTING_TEXT_CHANNEL!, `id`, `name`, `permission_overwrites`));
     console.log(await client.getGuildData(process.env.TESTING_GUILD!, `id`, `name`, `owner_id`));

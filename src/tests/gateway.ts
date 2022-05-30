@@ -1,7 +1,8 @@
 import { configDotenv } from '../dotenv';
 
-import { Logger, wait } from '@br88c/node-utils';
+import { Logger } from '@br88c/node-utils';
 import { Gateway, Rest } from 'distype';
+import { setTimeout as wait } from 'node:timers/promises';
 
 configDotenv();
 
@@ -15,7 +16,7 @@ const rest = new Rest(process.env.BOT_TOKEN!, {}, logger.log, logger);
 
 const gateway = new Gateway(process.env.BOT_TOKEN!, rest, false, { intents: `all` }, logger.log, logger);
 
-gateway.once(`SHARDS_READY`, async () => {
+gateway.once(`SHARDS_RUNNING`, async () => {
     console.log(await gateway.getGuildMembers(process.env.TESTING_GUILD!));
 
     await gateway.updatePresence({

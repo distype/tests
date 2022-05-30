@@ -1,7 +1,8 @@
 import { configDotenv } from '../dotenv';
 
-import { Logger, wait } from '@br88c/node-utils';
+import { Logger } from '@br88c/node-utils';
 import { Client, PermissionsUtils } from 'distype';
+import { setTimeout as wait } from 'node:timers/promises';
 
 configDotenv();
 
@@ -22,7 +23,7 @@ const client = new Client(process.env.BOT_TOKEN!, {
     gateway: { intents: `nonPrivileged` }
 }, logger.log, logger);
 
-client.gateway.on(`SHARDS_READY`, async () => {
+client.gateway.on(`SHARDS_RUNNING`, async () => {
     await wait(5000);
     console.log(PermissionsUtils.toReadable(await client.getSelfPermissions(process.env.TESTING_GUILD!, process.env.TESTING_TEXT_CHANNEL!)));
 });

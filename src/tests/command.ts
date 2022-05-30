@@ -1,9 +1,10 @@
 import { configDotenv } from '../dotenv';
 
-import { Logger, wait } from '@br88c/node-utils';
-import { Button, ButtonStyle, ChatCommand, CommandHandler, ContextMenuCommand, Modal } from '@distype/cmd';
+import { Logger } from '@br88c/node-utils';
+import { Button, ButtonStyle, ChatCommand, CommandHandler, ContextMenuCommand, Embed, Modal } from '@distype/cmd';
 import { Client } from 'distype';
-import { inspect } from 'util';
+import { setTimeout as wait } from 'node:timers/promises';
+import { inspect } from 'node:util';
 
 configDotenv();
 
@@ -152,8 +153,15 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
         })
     );
 
-client.gateway.on(`SHARDS_READY`, () => {
-    commandHandler.push();
+client.gateway.on(`SHARDS_RUNNING`, async () => {
+    await commandHandler.push();
+
+    const message = await commandHandler.sendMessage(process.env.TESTING_TEXT_CHANNEL!, `Pushed commands!`);
+    await wait(5000);
+    await commandHandler.editMessage(process.env.TESTING_TEXT_CHANNEL!, message.id,
+        new Embed()
+            .setTitle(`Pushed commands!`)
+    );
 });
 
 client.gateway.connect();
