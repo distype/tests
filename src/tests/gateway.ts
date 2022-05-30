@@ -37,7 +37,7 @@ gateway.once(`SHARDS_RUNNING`, async () => {
 
     await gateway.shards.get(0)?.restart();
 
-    await wait(5000);
+    await wait(60000);
 
     logger.log(`Ping before kill: ${gateway.averagePing}ms`);
 

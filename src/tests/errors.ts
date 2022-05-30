@@ -23,8 +23,13 @@ client.gateway.on(`SHARDS_RUNNING`, async () => {
 
     await wait(5000);
 
-    // @ts-expect-error Invalid ID, invalid content
-    await client.rest.createMessage(`Not an ID!`, { content: [`this isn't content!`] }).catch(() => {});
+    // Invalid ID
+    await client.rest.createMessage(`Not an ID!`, { content: `some content` }).catch(console.log);
+
+    await wait(5000);
+
+    // @ts-expect-error Invalid content
+    await client.rest.createMessage(process.env.TESTING_TEXT_CHANNEL, { content: [`this isn't content!`] }).catch(console.log);
 
     await wait(5000);
 
