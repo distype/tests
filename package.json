@@ -27,15 +27,15 @@
     "url": "git+https://github.com/distype/tests.git"
   },
   "dependencies": {
-    "@br88c/node-utils": "^1.2.1",
+    "@br88c/node-utils": "^1.3.0",
     "@distype/cmd": "github:distype/cmd#build",
     "distype": "github:distype/distype#build",
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.1"
   },
   "devDependencies": {
-    "@br88c/eslint-config": "^1.4.0",
-    "@types/node": "^16.11.34",
-    "eslint": "^8.15.0",
+    "@br88c/eslint-config": "^1.5.0",
+    "@types/node": "^16.11.36",
+    "eslint": "^8.16.0",
     "typescript": "^4.6.4"
   },
   "engines": {
