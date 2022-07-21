@@ -46,4 +46,6 @@ gateway.once(`MANAGER_READY`, async () => {
     logger.log(`Completed Tests`);
 });
 
+gateway.on(`*`, (payload) => logger.log(`Got opcode ${payload.op}${payload.t ? ` (${payload.t})` : ``}`));
+
 gateway.connect();
