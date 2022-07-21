@@ -23,7 +23,7 @@ const client = new Client(process.env.BOT_TOKEN!, {
     gateway: { intents: `nonPrivileged` }
 }, logger.log, logger);
 
-client.gateway.on(`SHARDS_RUNNING`, async () => {
+client.gateway.on(`MANAGER_READY`, async () => {
     await wait(5000);
     console.log(PermissionsUtils.toReadable(await client.getSelfPermissions(process.env.TESTING_GUILD!, process.env.TESTING_TEXT_CHANNEL!)));
 });

@@ -26,7 +26,7 @@ const cache = new Cache({
 const rest = new Rest(process.env.BOT_TOKEN!, {}, logger.log, logger);
 const gateway = new Gateway(process.env.BOT_TOKEN!, rest, cache, { intents: `all` }, logger.log, logger);
 
-gateway.on(`SHARDS_RUNNING`, async () => {
+gateway.on(`MANAGER_READY`, async () => {
     console.log(cache);
 
     await wait(10000);

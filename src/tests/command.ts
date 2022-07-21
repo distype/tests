@@ -153,7 +153,7 @@ const commandHandler = new CommandHandler(client, logger.log, logger)
         })
     );
 
-client.gateway.on(`SHARDS_RUNNING`, async () => {
+client.gateway.on(`MANAGER_READY`, async () => {
     await commandHandler.push();
 
     const message = await commandHandler.sendMessage(process.env.TESTING_TEXT_CHANNEL!, `Pushed commands!`);
