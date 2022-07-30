@@ -22,7 +22,23 @@ client.gateway.on(`MANAGER_READY`, async () => {
     await wait(5000);
 
     // @ts-expect-error Invalid opcode
-    await client.gateway.shards.get(0)?.send({ op: 100 });
+    await client.gateway.shards.first()?.send({ op: 100 });
+
+    await wait(5000);
+
+    await client.gateway.shards.first()?.send({
+        op: 2,
+        d: {
+            intents: 0,
+            properties: {
+                browser: `distype`,
+                device: `distype`,
+                os: process.platform
+            },
+            shard: [0, client.gateway.shards.first()!.numShards],
+            token: `haha`
+        }
+    });
 
     await wait(5000);
 
@@ -36,7 +52,8 @@ client.gateway.on(`MANAGER_READY`, async () => {
 
     await wait(5000);
 
-    client.gateway.shards.get(0)?.kill();
+    logger.log(`Ping before kill: ${await client.gateway.getAveragePing()}ms`);
+    client.gateway.shards.first()?.kill();
 
     logger.log(`Completed Tests`);
 });
