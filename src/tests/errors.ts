@@ -13,7 +13,10 @@ const logger = new Logger({
     }
 });
 
-const client = new Client(process.env.BOT_TOKEN!, { gateway: { intents: `nonPrivileged` } }, logger.log, logger);
+const client = new Client(process.env.BOT_TOKEN!, { gateway: {
+    intents: `nonPrivileged`,
+    sharding: { shards: 1 }
+} }, logger.log, logger);
 
 client.gateway.on(`MANAGER_READY`, async () => {
     await wait(5000);
