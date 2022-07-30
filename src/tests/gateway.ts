@@ -14,10 +14,10 @@ const logger = new Logger({
 });
 const rest = new Rest(process.env.BOT_TOKEN!, {}, logger.log, logger);
 
-const gateway = new Gateway(process.env.BOT_TOKEN!, rest, false, { intents: `all` }, logger.log, logger);
+const gateway = new Gateway(process.env.BOT_TOKEN!, rest, false, { intents: `nonPrivileged` }, logger.log, logger);
 
 gateway.once(`MANAGER_READY`, async () => {
-    console.log(await gateway.getGuildMembers(process.env.TESTING_GUILD!));
+    console.log(gateway.guildCount);
 
     await gateway.updatePresence({
         activities: [
@@ -31,11 +31,8 @@ gateway.once(`MANAGER_READY`, async () => {
         status: `online`
     });
 
+
     await gateway.updateVoiceState(process.env.TESTING_GUILD!, process.env.TESTING_VOICE_CHANNEL!);
-
-    await wait(5000);
-
-    await gateway.shards.get(0)?.restart();
 
     await wait(60000);
 
@@ -45,7 +42,5 @@ gateway.once(`MANAGER_READY`, async () => {
 
     logger.log(`Completed Tests`);
 });
-
-gateway.on(`*`, (payload) => logger.log(`Got opcode ${payload.op}${payload.t ? ` (${payload.t})` : ``}`));
 
 gateway.connect();
