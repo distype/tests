@@ -1,7 +1,7 @@
 import { configDotenv } from '../dotenv';
 
 import { Logger } from '@br88c/node-utils';
-import { Button, ButtonStyle, ChatCommand, CommandHandler, Expire, MessageCommand, Modal, ModalTextFieldStyle, UserCommand } from '@distype/cmd';
+import { Button, ButtonStyle, ChatCommand, CommandHandler, Expire, MentionableSelect, MessageCommand, Modal, ModalTextFieldStyle, StringSelect, UserCommand } from '@distype/cmd';
 import { Client } from 'distype';
 import { setTimeout as wait } from 'node:timers/promises';
 import { inspect } from 'node:util';
@@ -101,6 +101,34 @@ const command4 = new ChatCommand()
     });
 
 const command5 = new ChatCommand()
+    .setName(`selects`)
+    .setDescription(`This command sends select menus!`)
+    .setExecute(async (ctx) => {
+        const firstSelect = new StringSelect()
+            .setId(`fooselect0`)
+            .setPlaceholder(`Select a string!`)
+            .addOption(`First`, `first`, `The first option`, { name: `😄` })
+            .addOption(`Second`, `second`, `The second option`, { name: `🥶` })
+            .addOption(`Third`, `third`, `The third option`, { name: `🐈` })
+            .setExecute(async (ctx) => {
+                await ctx.send(`\`\`\`js\n${inspect(ctx.options)}\n\`\`\``);
+            });
+
+        const secondSelect = new MentionableSelect()
+            .setId(`fooselect1`)
+            .setPlaceholder(`Select some mentionables!`)
+            .setMinValues(1)
+            .setMaxValues(3)
+            .setExecute(async (ctx) => {
+                await ctx.send(`\`\`\`js\n${inspect(ctx.options)}\n\`\`\``);
+            });
+
+        await ctx.send(`Try out these select menus!`, [firstSelect, secondSelect]);
+        firstSelect.bind(ctx.commandHandler);
+        secondSelect.bind(ctx.commandHandler);
+    });
+
+const command6 = new ChatCommand()
     .setName(`modal`)
     .setDescription(`This command opens up a modal!`)
     .setExecute(async (ctx) => {
@@ -115,13 +143,13 @@ const command5 = new ChatCommand()
         );
     });
 
-const command6 = new MessageCommand()
+const command7 = new MessageCommand()
     .setName(`Message Command`)
     .setExecute(async (ctx) => {
         await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
     });
 
-const command7 = new UserCommand()
+const command8 = new UserCommand()
     .setName(`User Command`)
     .setExecute(async (ctx) => {
         await ctx.send(`\`\`\`js\n${inspect(ctx.target)}\n\`\`\``);
@@ -129,7 +157,7 @@ const command7 = new UserCommand()
 
 
 client.gateway.on(`MANAGER_READY`, async () => {
-    await commandHandler.pushCommands(command0, command1, command2, command3, command4, command5, command6, command7);
+    await commandHandler.pushCommands(command0, command1, command2, command3, command4, command5, command6, command7, command8);
 });
 
 client.gateway.connect();
